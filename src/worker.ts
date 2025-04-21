@@ -65,12 +65,12 @@ const worker = new Worker(
       
       // Extract scan type for logging
       const scanType = payload.metadata?.scanType || 'unknown';
-      console.log(`Processing ${scanType} scan job ${job.id} for tenant ${tenant.tenant_id}`);
+      // console.log(`Processing ${scanType} scan job ${job.id} for tenant ${tenant.tenant_id}`);
 
       // Process the job with our standardized format
       await clickHouseService.processJob({ jobData: { tenant, payload } });
       
-      console.log(`Job ${job.id} processed successfully`);
+      // console.log(`Job ${job.id} processed successfully`);
       return { success: true, scanType };
     } catch (error) {
       console.error(`Error processing job ${job.id}:`, error);
@@ -93,7 +93,7 @@ const worker = new Worker(
 // Handle worker events
 worker.on('completed', (job: Job) => {
   // Keep this minimal to reduce log volume in production
-  console.log(`Job ${job.id} completed`);
+  // console.log(`Job ${job.id} completed`);
 });
 
 worker.on('failed', (job: Job | undefined, error: Error) => {

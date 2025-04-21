@@ -199,17 +199,13 @@ export class ClickHouseService {
     if (!data || data.length === 0) return;
 
     try {
-      // Print a sample of what we're inserting
-      console.log(`Inserting ${data.length} records into ${table}. Sample:`, 
-        JSON.stringify(data[0]).substring(0, 300) + (JSON.stringify(data[0]).length > 300 ? '...' : ''));
       
       await this.client.insert({
         table,
         values: data,
         format: 'JSONEachRow',
       });
-      
-      console.log(`Successfully inserted ${data.length} records into ${table}`);
+
     } catch (error) {
       console.error(`Error inserting data into ${table}:`, error);
       

@@ -21,6 +21,9 @@ const config = {
     password: process.env.CLICKHOUSE_PASSWORD || '',
     database: process.env.CLICKHOUSE_DATABASE || 'stats',
   },
+  worker: {
+    logEvery: parseInt(process.env.LOG_EVERY || '100'),
+  },
 };
 
 export default config;

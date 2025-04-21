@@ -13,6 +13,14 @@ const connection = new IORedis({
   maxRetriesPerRequest: null, // Required by BullMQ
 });
 
+// Stats for processed jobs
+let processedJobCount = 0;
+let totalProcessingTimeMs = 0;
+let intervalJobCount = 0;
+let intervalProcessingTimeMs = 0;
+
+const LOG_EVERY = config.worker?.logEvery || 100;
+
 // Create worker
 const worker = new Worker(
   config.queue.name,
@@ -67,8 +75,23 @@ const worker = new Worker(
       const scanType = payload.metadata?.scanType || 'unknown';
       // console.log(`Processing ${scanType} scan job ${job.id} for tenant ${tenant.tenant_id}`);
 
+      const start = Date.now();
       // Process the job with our standardized format
       await clickHouseService.processJob({ jobData: { tenant, payload } });
+      
+      const end = Date.now();
+      const duration = end - start;
+      processedJobCount++;
+      totalProcessingTimeMs += duration;
+      intervalJobCount++;
+      intervalProcessingTimeMs += duration;
+      if (intervalJobCount % LOG_EVERY === 0) {
+        const intervalAvg = (intervalProcessingTimeMs / intervalJobCount).toFixed(2);
+        const totalAvg = (totalProcessingTimeMs / processedJobCount).toFixed(2);
+        console.log(`${processedJobCount} jobs processed (total avg: ${totalAvg} ms, last ${intervalJobCount} avg: ${intervalAvg} ms)`);
+        intervalJobCount = 0;
+        intervalProcessingTimeMs = 0;
+      }
       
       // console.log(`Job ${job.id} processed successfully`);
       return { success: true, scanType };

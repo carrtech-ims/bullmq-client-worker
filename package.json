@@ -1,0 +1,33 @@
+{
+  "name": "client-bullmq-worker",
+  "version": "1.0.0",
+  "description": "BullMQ worker for processing client stats and writing to ClickHouse",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "publish-examples": "ts-node src/example-jobs.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bullmq",
+    "clickhouse",
+    "redis",
+    "worker"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@clickhouse/client": "^1.11.1",
+    "bullmq": "^5.49.1",
+    "dotenv": "^16.5.0",
+    "ioredis": "^5.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "nodemon": "^3.0.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}

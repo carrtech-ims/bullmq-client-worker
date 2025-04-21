@@ -18,7 +18,7 @@ const worker = new Worker(
   config.queue.name,
   async (job: Job) => {
     try {
-      console.log(`Processing job ${job.id}`);
+      // console.log(`Processing job ${job.id}`);
       
       // Get job data and extract the parts we need
       const data = job.data as any;
@@ -33,7 +33,7 @@ const worker = new Worker(
         tenant = data.jobData.tenant;
         payload = data.jobData.payload;
       } else {
-        console.log(`Job ${job.id} has a non-standard format. Attempting to adapt...`);
+        // console.log(`Job ${job.id} has a non-standard format. Attempting to adapt...`);
         
         // Try to infer the structure based on the available data
         if (data.jobData?.payload?.metadata?.scanType) {
